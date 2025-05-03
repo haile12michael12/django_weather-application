@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dictionary App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-control { width: 100%; padding: 10px; margin: 10px 0; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .error { color: red; }
+        .word-info { margin-top: 20px; padding: 20px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dictionary App</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn">Search</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if word_data %}
+            <div class="word-info">
+                <h2>{{ word_data.word }}</h2>
+                {% for meaning in word_data.meanings %}
+                    <div>
+                        <h3>{{ meaning.partOfSpeech }}</h3>
+                        {% for definition in meaning.definitions %}
+                            <p><strong>Definition:</strong> {{ definition.definition }}</p>
+                            {% if definition.example %}
+                                <p><em>Example:</em> {{ definition.example }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
